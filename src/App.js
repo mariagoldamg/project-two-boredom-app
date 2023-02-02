@@ -1,23 +1,40 @@
-import logo from './logo.svg';
+import video from './video-bored.mp4'
+import { useEffect, useState } from 'react';
 import './App.css';
 
 function App() {
+
+  const [bored, setBored] = useState('I am bored');
+  const [advice,setAdvice] = useState (bored);
+
+
+  useEffect(()=>{
+    const getAdvice = async()=>{
+     const response = await fetch ('http://www.boredapi.com/api/activity/');
+     const data = await response.json()
+    setBored (data.activity)
+      }
+    getAdvice()
+
+}, [advice])
+
+const newAdvice = (e)=>{
+setAdvice (bored);
+}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+
+<div className='container'>
+        <video autoPlay muted loop>
+   <source src={video} type="video/mp4" />
+</video>
+<h1>Bored? Don't know what to do?</h1>
+<h2>We have a suggestion for you:</h2>
+<p>{advice}</p>
+<button onClick = {newAdvice} >Unbore Yourself</button>
+</div>
+
     </div>
   );
 }
